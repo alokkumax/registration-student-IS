@@ -59,3 +59,9 @@ td {
     border-bottom: 1px solid #e5e7eb;
     padding: 10px 8px;
 }
+
+td button {
+    background: #6b7280;
+    padding: 6px 10px;
+    font-size: 13px;
+}
