@@ -3,43 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Registration System</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Student Registration System | Tailwind Premium</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-hover': '#4f46e5',
+                        secondary: '#ec4899',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .glass-card {
+                @apply bg-white/80 backdrop-blur-xl border border-white/30 shadow-xl rounded-2xl transition-all duration-300;
+            }
+            .input-field {
+                @apply w-full px-4 py-3 rounded-lg border border-slate-200 bg-white/50 focus:outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all;
+            }
+            .btn-primary {
+                @apply w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0;
+            }
+            .action-btn {
+                @apply p-2 rounded-lg transition-all flex items-center justify-center;
+            }
+        }
+        /* Custom scrollbar for Tailwind */
+        #tableWrapper::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        #tableWrapper::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        #tableWrapper::-webkit-scrollbar-thumb {
+            background: #6366f1;
+            border-radius: 10px;
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <h1>Student Registration System</h1>
-        <p>Simple system to add students.</p>
+<body class="bg-gradient-to-br from-slate-50 to-slate-200 min-height-screen font-outfit text-slate-800 p-4 md:p-8">
+    <header class="max-w-[1100px] mx-auto mb-8 glass-card p-6 md:p-8 text-center">
+        <h1 class="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-pink-500 bg-clip-text text-transparent mb-2">
+            Student Registration
+        </h1>
+        <p class="text-slate-500 text-lg">Manage your student database with efficiency and style.</p>
+        
+        <div class="flex flex-wrap justify-center gap-6 mt-6 pt-6 border-t border-slate-100">
+            <div class="flex items-center gap-2 text-slate-500 text-sm">
+                <i class="fa-solid fa-users text-indigo-600 text-xl"></i>
+                <span id="totalStudents">0 Students</span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-500 text-sm">
+                <i class="fa-solid fa-clock text-indigo-600 text-xl"></i>
+                <span>Last Updated: <span id="lastUpdate">Just now</span></span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-500 text-sm">
+                <i class="fa-solid fa-shield-halved text-indigo-600 text-xl"></i>
+                <span>Secure Storage</span>
+            </div>
+        </div>
     </header>
 
-    <main>
-        <section>
-            <h2>Add Student</h2>
-            <form id="studentForm">
-                <input type="text" id="name" placeholder="Name" required>
-                <input type="text" id="studentID" placeholder="ID" required>
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="text" id="contact" placeholder="Contact" required>
-                <button type="submit">Add Student</button>
+    <main class="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-8 items-stretch">
+        <!-- Add/Edit Section -->
+        <section class="glass-card p-6 md:p-8 flex flex-col">
+            <h2 id="formTitle" class="text-xl font-bold mb-6 flex items-center gap-3 text-indigo-600">
+                <i class="fa-solid fa-user-plus"></i> Add Student
+            </h2>
+
+            <form id="studentForm" class="space-y-5">
+                <div>
+                    <label for="name" class="block text-sm font-semibold mb-2">Full Name</label>
+                    <input type="text" id="name" class="input-field" placeholder="e.g. John Doe" required>
+                </div>
+
+                <div>
+                    <label for="studentID" class="block text-sm font-semibold mb-2">Student ID</label>
+                    <input type="text" id="studentID" class="input-field" placeholder="e.g. 10234" required>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-semibold mb-2">Email Address</label>
+                    <input type="email" id="email" class="input-field" placeholder="john@example.com" required>
+                </div>
+
+                <div>
+                    <label for="contact" class="block text-sm font-semibold mb-2">Contact Number</label>
+                    <input type="tel" id="contact" class="input-field" placeholder="10-digit number" required>
+                </div>
+
+                <button id="submitBtn" type="submit" class="btn-primary">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Add Student</span>
+                </button>
             </form>
         </section>
 
-        <section>
-            <h2>Student List</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>ID</th>
-                        <th>Email</th>
-                        <th>Contact</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="studentData"></tbody>
-            </table>
+        <!-- Records Section -->
+        <section class="glass-card p-6 md:p-8 flex flex-col">
+            <h2 class="text-xl font-bold mb-6 flex items-center gap-3 text-indigo-600">
+                <i class="fa-solid fa-list-ul"></i> Student Directory
+            </h2>
+            <div id="tableWrapper" class="overflow-auto flex-1 rounded-xl bg-white/40 border border-slate-100 max-h-[400px] lg:max-h-none">
+                <table class="w-full text-left border-collapse">
+                    <thead class="sticky top-0 bg-indigo-50/80 backdrop-blur-md">
+                        <tr>
+                            <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Name</th>
+                            <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">ID</th>
+                            <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Email</th>
+                            <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Contact</th>
+                            <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentData" class="divide-y divide-slate-100">
+                        <!-- Content generated by JS -->
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
+
     <script src="script.js"></script>
 </body>
 </html>
+
