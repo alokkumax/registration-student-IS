@@ -34,6 +34,37 @@ function clearForm() {
     // Reset button style to primary
     submitButton.classList.remove('bg-pink-500', 'hover:bg-pink-600');
     submitButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+    clearErrors();
+}
+
+function clearErrors() {
+    const errorMessages = document.querySelectorAll('[id$="Error"]');
+    const inputs = document.querySelectorAll('.input-field');
+    
+    errorMessages.forEach(msg => {
+        msg.textContent = '';
+        msg.classList.add('hidden');
+    });
+    
+    inputs.forEach(input => {
+        input.classList.remove('border-red-500', 'focus:ring-red-500/10', 'focus:border-red-500');
+        input.classList.add('border-slate-200', 'focus:ring-indigo-500/10', 'focus:border-indigo-500');
+    });
+}
+
+function showError(inputId, message) {
+    const errorElement = document.getElementById(`${inputId}Error`);
+    const inputElement = document.getElementById(inputId);
+    
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.classList.remove('hidden');
+    }
+    
+    if (inputElement) {
+        inputElement.classList.remove('border-slate-200', 'focus:ring-indigo-500/10', 'focus:border-indigo-500');
+        inputElement.classList.add('border-red-500', 'focus:ring-red-500/10', 'focus:border-red-500');
+    }
 }
 
 function isValidForm(name, id, email, contact) {
@@ -41,28 +72,43 @@ function isValidForm(name, id, email, contact) {
     const idRegex = /^[0-9]+$/;
     const contactRegex = /^[0-9]{10,}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let isValid = true;
 
-    if (!name || !id || !email || !contact) {
-        alert("Please fill all fields.");
-        return false;
+    clearErrors();
+
+    if (!name) {
+        showError('name', "Full name is required.");
+        isValid = false;
+    } else if (!nameRegex.test(name)) {
+        showError('name', "Name should only contain letters.");
+        isValid = false;
     }
-    if (!nameRegex.test(name)) {
-        alert("Name should contain only letters.");
-        return false;
+
+    if (!id) {
+        showError('studentID', "Student ID is required.");
+        isValid = false;
+    } else if (!idRegex.test(id)) {
+        showError('studentID', "ID must be numeric.");
+        isValid = false;
     }
-    if (!idRegex.test(id)) {
-        alert("ID should contain only numbers.");
-        return false;
+
+    if (!email) {
+        showError('email', "Email address is required.");
+        isValid = false;
+    } else if (!emailRegex.test(email)) {
+        showError('email', "Please enter a valid email address.");
+        isValid = false;
     }
-    if (!contactRegex.test(contact)) {
-        alert("Contact should be at least 10 digits.");
-        return false;
+
+    if (!contact) {
+        showError('contact', "Contact number is required.");
+        isValid = false;
+    } else if (!contactRegex.test(contact)) {
+        showError('contact', "Contact must be at least 10 digits.");
+        isValid = false;
     }
-    if (!emailRegex.test(email)) {
-        alert("Please enter a valid email.");
-        return false;
-    }
-    return true;
+
+    return isValid;
 }
 
 function renderTable() {
@@ -117,6 +163,7 @@ window.editStudent = function(index) {
     submitButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
     submitButton.classList.add('bg-pink-500', 'hover:bg-pink-600');
     
+    clearErrors();
     if (window.innerWidth <= 1024) {
         studentForm.scrollIntoView({ behavior: 'smooth' });
     }
